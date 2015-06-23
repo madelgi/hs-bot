@@ -13,20 +13,17 @@ module Bot.BaseFunctions
     , uptime
     ) where
 
-import           Data.List
-import           Network
-import           System.IO
-import           Text.Printf
+import           Control.Monad.Reader
 import           Control.Exception        ( bracket, bracket_ )
 import           System.Exit              ( exitWith, ExitCode(..) )
-import           Control.Arrow
-import           Control.Monad.Reader
 import           Text.Read                ( readMaybe )
-import           System.Random
+import           System.Random            ( newStdGen, randomRs )
 import           System.Time              ( getClockTime, diffClockTimes
                                           , TimeDiff
                                           )
+
 import           Bot.Common
+import           Utils.Settings
 
 -- | Takes a string, reads it into an int, and then generates a random
 -- | Print a message to the terminal. Can be used via IRC with
@@ -37,7 +34,10 @@ import           Bot.Common
 --
 --   Mostly used as a helper function to other commands.
 idMsg :: String -> Net ()
-idMsg s = write "PRIVMSG" (chan ++ " :" ++ s)
+idMsg s = do
+    config <- asks settings
+    let chn = chan $ irc config
+    write "PRIVMSG" (chn ++ " :" ++ s)
 
 -- | Shut down the bot
 quitBot :: Net ()

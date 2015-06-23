@@ -6,32 +6,19 @@
 --------------------------------------------------------------------------------
 module Bot.Common where
 
-import           Data.List
-import           Network
-import           System.IO
-import           Text.Printf
-import           Control.Exception        ( bracket, bracket_ )
-import           System.Exit
-import           Control.Arrow
+
+import           System.IO              ( Handle )
+import           Text.Printf            ( hPrintf, printf )
+import           System.Time            ( ClockTime )
 import           Control.Monad.Reader
-import           Text.Read                ( readMaybe )
-import           System.Random
-import           System.Time
 
-import qualified Utils.Settings as S
-
--- | Basic Parameters TODO: incorporate a settings module
---   that reads from settings.yml file
-server  = "irc.freenode.net"
-port    = 6667
-chan    = "##mfdel-chat"
-nick    = "jeeves"
+import           Utils.Settings
 
 -- | Define a data type that holds our handle, so we don't have to
 --   pass it  to every function.
 data Bot = Bot { socket    :: Handle
                , starttime :: ClockTime
-               , settings  :: S.Settings
+               , settings  :: Settings
                }
 type Net = ReaderT Bot IO
 

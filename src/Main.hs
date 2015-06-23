@@ -7,7 +7,6 @@
 -- {{{ Module declaration and imports.
 module Main
     ( main
-    , idMsg
     ) where
 
 import           Data.List                ( dropWhile, isPrefixOf )
@@ -21,7 +20,7 @@ import           Control.Monad.Reader
 import           System.Random
 import           System.Time
 
-import qualified Utils.Settings as S
+import           Utils.Settings
 import           Bot.BaseFunctions
 import           Bot.Common
 
@@ -36,23 +35,24 @@ main = bracket connect disconnect loop
 -- | TODO: add words
 connect :: IO Bot
 connect = notify $ do
-    s <- S.getSettings
+    s <- getSettings
     t <- getClockTime
-    h <- connectTo server (PortNumber (fromIntegral port))
+    h <- connectTo (server $ irc s) (PortNumber (fromIntegral (port $ irc s) ))
     hSetBuffering h NoBuffering
     return (Bot h t s)
     where
         notify a = bracket_
-            (printf "Connecting to %s ..." server >> hFlush stdout)
+            (printf "Connecting to server ..." >> hFlush stdout)
             (putStrLn "done.")
             a
 
 -- | TODO: add words
 run :: Net ()
 run  = do
-    write "NICK" nick
-    write "USER" (nick ++ " 0 * :tutorial bot")
-    write "JOIN" chan
+    s <- liftIO getSettings
+    write "NICK" (nick $ bot s)
+    write "USER" ( (nick $ bot s) ++ " 0 * :tutorial bot")
+    write "JOIN" (chan $ irc s)
     asks socket >>= listen
 
 -- | TODO: add words
@@ -84,7 +84,3 @@ eval _                 = return ()
 -- | Helper function, shortens `isPrefixOf`.
 pre :: String -> String -> Bool
 pre = isPrefixOf
-
---------------------------------------------------------------------------------
--- BASIC FUNCTIONS
-
