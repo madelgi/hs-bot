@@ -1,6 +1,4 @@
 Sample.hs
-src/Utils/Settings.hs
-src/Utils/Bot/Wikipedia.hs
-data/
+src/Bot/Wikipedia.hs
 .cabal-sandbox/
 dist/
