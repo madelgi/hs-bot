@@ -15,7 +15,7 @@ import Data.Maybe       ( fromJust )
 import qualified Data.ByteString.Char8 as BS
 -- }}}
 
-settingsFile = "../data/settings.yml"
+settingsFile = "data/settings.yml"
 
 getSettings :: IO Settings
 getSettings = do
