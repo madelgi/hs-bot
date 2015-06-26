@@ -22,8 +22,8 @@ import           System.Time
 
 import           Utils.Settings
 import           Bot.BaseFunctions
+import           Bot.Wikipedia            ( wiki )
 import           Bot.Common
-
 -- }}}
 
 -- | TODO: add words
@@ -79,6 +79,7 @@ eval "!help"           = helpMsg
 eval "!uptime"         = uptime >>= idMsg
 eval x | pre "!id" x   = idMsg (drop 4 x)
 eval x | pre "!roll" x = roll (drop 6 x)
+eval x | pre "!wiki" x = wiki (drop 6 x)
 eval _                 = return ()
 
 -- | Helper function, shortens `isPrefixOf`.
