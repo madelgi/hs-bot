@@ -3,6 +3,7 @@
 -- Maintainer   : maxdelgiudice@gmail.com
 -- Stability    : Experimental
 -- Summary      : gets yr bot up and running
+--
 --------------------------------------------------------------------------------
 -- {{{ Module declaration and imports.
 module Main
